@@ -1,0 +1,4 @@
+# Check that dropbox daemon is running and print error
+if [ $HOSTNAME == "muon5.npl.washington.edu" ]; then
+  /home/mhmurray/bin/checkdropbox
+fi

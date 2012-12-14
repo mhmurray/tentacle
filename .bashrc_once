@@ -17,12 +17,8 @@ export PYTHONSTARTUP=~/.pystartup
 export CVS_RSH=ssh
 export CVSEDITOR=vim
 
-# MuSun bashrc. We have to be careful. This spawns sub-shells in, eg.
-# the thisroot.sh script. The subshell will again try to source
-# .bashrc_once, which gets us stuck in a loop. To guard against this,
-# we ensure that this happens only once.
-if [ -f ~/.bash_musun ] && [ -z "$BASH_MUSUN_GUARD" ]; then
-  export BASH_MUSUN_GUARD=true
-  source ~/.bash_musun
-  unset BASH_MUSUN_GUARD
+# System-specific .bashrc_once. This is typically a symlink
+# to a file in this repository.
+if [ -f ~/.bashrc_once_local ]; then
+  source ~/.bashrc_once_local
 fi
