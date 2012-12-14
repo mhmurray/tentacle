@@ -1,6 +1,6 @@
 # These are specific to a single musun installation.
 # You will have to modify this file on a host-by-host basis.
-# To maintain version control, the set of .bashrc_musun_hostname
+# To maintain version control, the set of .bashrc_*_hostname
 # files will exist in the git repo.
 
 # CVS
