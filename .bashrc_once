@@ -1,0 +1,28 @@
+# This only runs once, so should set environment variables
+# and such here. They will be exported to child processes.
+
+# Locale settings
+export LANGUAGE="en_US:en"
+export LC_MESSAGES="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export LC_COLLATE="en_US.UTF-8"
+
+# My scripts
+export PATH+=:$HOME/bin
+
+# Python startup file
+export PYTHONSTARTUP=~/.pystartup
+
+# CVS
+export CVS_RSH=ssh
+export CVSEDITOR=vim
+
+# MuSun bashrc. We have to be careful. This spawns sub-shells in, eg.
+# the thisroot.sh script. The subshell will again try to source
+# .bashrc_once, which gets us stuck in a loop. To guard against this,
+# we ensure that this happens only once.
+if [ -f ~/.bash_musun ] && [ -z "$BASH_MUSUN_GUARD" ]; then
+  export BASH_MUSUN_GUARD=true
+  source ~/.bash_musun
+  unset BASH_MUSUN_GUARD
+fi
