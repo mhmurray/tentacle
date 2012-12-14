@@ -13,7 +13,7 @@
 # EXPORT_FUNCTIONS: export SHELL_PLATFORM and shell_is_* functions for use
 #                   in other scripts.
 
-EXPORT_FUNCTIONS=true
+EXPORT_FUNCTIONS=false
 
 # Code
 # ----
@@ -61,7 +61,7 @@ if $EXPORT_FUNCTIONS ; then
 fi
 
 # Now dispatch special files
-PRF="${HOME}/."
+PRF="${HOME}/tentacle/"
 
 [ -f "${PRF}bashrc_once"  ]       && [ -z "$BRCD_RANONCE" ] && . "${PRF}bashrc_once"  && export BRCD_RANONCE=true
 [ -f "${PRF}bashrc_all" ]                                   && . "${PRF}bashrc_all"
