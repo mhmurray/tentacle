@@ -8,7 +8,7 @@ export LC_CTYPE="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
 
 # My scripts
-export PATH+=:$HOME/bin
+export PATH=$HOME/bin:${PATH}
 
 # Python startup file
 export PYTHONSTARTUP=~/.pystartup
