@@ -1,4 +1,10 @@
 # Check that dropbox daemon is running and print error
+# The conditional is necessary because this file is used for 
+# muon6 and 7, but they shouldn't have Dropbox running.
 if [ $HOSTNAME == "muon5.npl.washington.edu" ]; then
   /home/mhmurray/bin/checkdropbox
 fi
+
+# Keychain for passwordless ssh. This is installed as binary by hand.
+keychain --nogui --quiet ~/.ssh/id_rsa
+. ~/.keychain/$HOSTNAME-sh
