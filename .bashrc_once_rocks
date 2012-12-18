@@ -7,6 +7,9 @@
 export CVSROOT="mhmurray@muon.npl.washington.edu:/home/cvs/musun/cvsroot"
 export CVS_RSH="/home/mhmurray/openssh/bin/ssh";
 
+# GIT
+export GIT_SSH="/home/mhmurray/openssh/bin/ssh";
+
 # ROOT
 source $HOME/root/bin/thisroot.sh
 
