@@ -19,6 +19,6 @@ export CVSEDITOR=vim
 
 # System-specific .bashrc_once. This is typically a symlink
 # to a file in this repository.
-if [ -f ~/.bashrc_once_local ]; then
+if [ -e ~/.bashrc_once_local ]; then
   source ~/.bashrc_once_local
 fi

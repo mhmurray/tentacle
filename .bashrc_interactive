@@ -25,6 +25,6 @@ HISTSIZE=10000
 export HISTCONTROL=ignoredups:erasedups
 
 # Allow for a system-specific .bashrc_interactive file
-if [ -f ~/.bashrc_interactive_local ]; then
+if [ -e ~/.bashrc_interactive_local ]; then
   source ~/.bashrc_interactive_local
 fi
