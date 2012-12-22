@@ -45,6 +45,7 @@ fi
 
 
 # Make $BASH_ENV the same in interactive and non-interactive scripts
+# BASH_SOURCE is the path to this bash_dispatch script as it was called.
 
 [ -z "$BASH_ENV" ] && export BASH_ENV="$BASH_SOURCE"
 
@@ -61,9 +62,19 @@ if $EXPORT_FUNCTIONS ; then
 fi
 
 # Now dispatch special files
+
 PRF="${HOME}/tentacle/."
 
-[ -f "${PRF}bashrc_once"  ]       && [ -z "$BRCD_RANONCE" ] && export BRCD_RANONCE=true && . "${PRF}bashrc_once" && unset BRCD_RANONCE 
+# bashrc_once needs guards to make sure it runs only once.
+# Set the guard BRCD_RANONCE before sourcing the bashrc_once file
+# so that any recursive invocations of bash_dispatch will not try
+# to run bashrc_once again
+
+if [ -f "${PRF}bashrc_once"  ] && [ -z "$BRCD_RANONCE" ]; then
+  export BRCD_RANONCE=true 
+  . "${PRF}bashrc_once"
+  unset BRCD_RANONCE
+fi
 [ -f "${PRF}bashrc_all" ]                                   && . "${PRF}bashrc_all"
 [ -f "${PRF}bashrc_script" ]      && shell_is_script        && . "${PRF}bashrc_script"
 [ -f "${PRF}bashrc_interactive" ] && shell_is_interactive   && . "${PRF}bashrc_interactive"

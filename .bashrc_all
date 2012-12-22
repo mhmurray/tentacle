@@ -1,5 +1,5 @@
 # System-specific .bashrc_all. This is typically a symlink
 # to a file in this repository.
-if [ -e ~/.bashrc_all_local ]; then
+if [ -f ~/.bashrc_all_local ]; then
   source ~/.bashrc_all_local
 fi

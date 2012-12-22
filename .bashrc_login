@@ -1,5 +1,5 @@
 # System-specific .bashrc_login. This is typically a symlink
 # to a file in this repository.
-if [ -e ~/.bashrc_login_local ]; then
+if [ -f ~/.bashrc_login_local ]; then
   source ~/.bashrc_login_local
 fi
