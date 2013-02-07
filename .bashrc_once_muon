@@ -1,8 +1,3 @@
-# Use keychain to manage ssh keys for passwordless login.
-# Note: --nogui option prompts on the command line, no pop-up, even with X.
-keychain --quiet --nogui ~/.ssh/id_dsa
-. ~/.keychain/$HOSTNAME-sh
-
 # CVS
 export CVSROOT="mhmurray@muon.npl.washington.edu:/home/cvs/musun/cvsroot"
 
