@@ -73,7 +73,7 @@ PRF="${HOME}/tentacle/."
 if [ -f "${PRF}bashrc_once"  ] && [ -z "$BRCD_RANONCE" ]; then
   export BRCD_RANONCE=true 
   . "${PRF}bashrc_once"
-  unset BRCD_RANONCE
+  #unset BRCD_RANONCE
 fi
 [ -f "${PRF}bashrc_all" ]                                   && . "${PRF}bashrc_all"
 [ -f "${PRF}bashrc_script" ]      && shell_is_script        && . "${PRF}bashrc_script"
