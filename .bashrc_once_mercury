@@ -20,3 +20,6 @@ source $HOME/musun/mu/thismu.sh
 
 # PyROOT
 export LD_LIBRARY_PATH=/usr/lib/python2.7:$LD_LIBRARY_PATH
+
+# Where mail is delivered
+export MAIL=/var/spool/mail/michael
