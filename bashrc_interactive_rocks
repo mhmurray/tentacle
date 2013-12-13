@@ -1,0 +1,2 @@
+alias cds='cd /SCRATCH/mhmurray' 
+alias ls='ls --color=tty --time-style=long-iso'
