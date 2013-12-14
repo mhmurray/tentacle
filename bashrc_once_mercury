@@ -7,10 +7,14 @@
 export CVSROOT="mhmurray@muon.npl.washington.edu:/home/cvs/musun/cvsroot"
 
 # ROOT
-source /opt/root-5.32.00-svn/bin/thisroot.sh
+source /opt/root/bin/thisroot.sh
 
 # MIDAS
+#source $HOME/alcap/thisalcap.sh
 source $HOME/musun/daq/midas/thismidas.sh
+
+# ROOTANA
+#source $HOME/musun/rootana/thisrootana.sh
 
 # LtFit blinding offset
 export LTFITINSTITUTION=UW
