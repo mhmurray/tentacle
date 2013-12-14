@@ -77,7 +77,7 @@ check_and_source_scripts () {
   fi
 
   if [ -f ${HOME}/.bashrc_${1}_local ]; then
-    [ -n "${BRCD_DEBUG}" ] && echo " --> source ${HOME}/bashrc_${1}_local"
+    [ -n "${BRCD_DEBUG}" ] && echo " --> source ${HOME}/.bashrc_${1}_local"
     . ${HOME}/.bashrc_${1}_local
   fi
 
