@@ -24,7 +24,3 @@ alias rinventor='rdesktop -g 1280x1040 128.95.100.19:33300'
 HISTSIZE=10000
 export HISTCONTROL=ignoredups:erasedups
 
-# Allow for a system-specific .bashrc_interactive file
-if [ -f ~/.bashrc_interactive_local ]; then
-  source ~/.bashrc_interactive_local
-fi
