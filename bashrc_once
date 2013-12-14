@@ -17,8 +17,20 @@ export PYTHONSTARTUP=~/.pystartup
 export CVS_RSH=ssh
 export CVSEDITOR=vim
 
-# System-specific .bashrc_once. This is typically a symlink
-# to a file in this repository.
-if [ -f ~/.bashrc_once_local ]; then
-  source ~/.bashrc_once_local
+# Allow for a system-specific .bashrc_interactive file specified locally
+if [ -f ${HOME}/.bashrc_once_local ]; then
+  source ${HOME}/.bashrc_once_local
 fi
+
+# Allow for a system-specific bashrc_once_${HOST} in tentacle/
+# eg. if ~/tentacle/bashrc_once_muon5 exists, source it.
+# However, don't source it again if it was linked from *_once, above
+BRCD_HOSTPRENAME=$(hostname | cut -d "." -f 1)
+# Guard against sourcing the same file again by checking device and inode
+if [ -f "${PRF}bashrc_once_${BRCD_HOSTPRENAME}" ]; then
+  if [ ! "${HOME}/.bashrc_once_local" \
+       -ef "${PRF}bashrc_once_${BRCD_HOSTPRENAME}" ]; then
+    source "${PRF}bashrc_once_${BRCD_HOSTPRENAME}"
+  fi
+fi
+unset BRCD_HOSTPRENAME
