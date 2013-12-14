@@ -10,28 +10,27 @@
 # Configuration
 # -------------
 #
-# EXPORT_FUNCTIONS: export SHELL_PLATFORM and shell_is_* functions for use
+# BRCD_EXPORT_FUNCTIONS: export BRCD_SHELL_PLATFORM and shell_is_* functions for use
 #                   in other scripts.
 
-EXPORT_FUNCTIONS=false
+BRCD_EXPORT_FUNCTIONS=false
+BRCD_DEBUG=
 
 # Code
 # ----
 
 # Avoid recursive invocation
-
-[ -n "$BASHRC_DISPATCH_PID" ] && [ $$ -eq "$BASHRC_DISPATCH_PID" ] && return
-BASHRC_DISPATCH_PID=$$
+[ -n "$BRCD_BASHRC_DISPATCH_PID" ] && [ $$ -eq "$BRCD_BASHRC_DISPATCH_PID" ] && return
+BRCD_BASHRC_DISPATCH_PID=$$
 
 
 # Setup the main shell variables and functions
-
-if [ -z "$SHELL_PLATFORM" ]; then
-    SHELL_PLATFORM='OTHER'
+if [ -z "$BRCD_SHELL_PLATFORM" ]; then
+    BRCD_SHELL_PLATFORM='OTHER'
     case "$OSTYPE" in
-      *'linux'*   ) SHELL_PLATFORM='LINUX' ;;
-      *'darwin'*  ) SHELL_PLATFORM='OSX' ;;
-      *'freebsd'* ) SHELL_PLATFORM='BSD' ;;
+      *'linux'*   ) BRCD_SHELL_PLATFORM='LINUX' ;;
+      *'darwin'*  ) BRCD_SHELL_PLATFORM='OSX' ;;
+      *'freebsd'* ) BRCD_SHELL_PLATFORM='BSD' ;;
     esac
 fi
 
@@ -46,14 +45,13 @@ fi
 
 # Make $BASH_ENV the same in interactive and non-interactive scripts
 # BASH_SOURCE is the path to this bash_dispatch script as it was called.
-
 [ -z "$BASH_ENV" ] && export BASH_ENV="$BASH_SOURCE"
 
 
 # Make these available to the potentially convoluted bashrc_* startup scripts
 
-if $EXPORT_FUNCTIONS ; then
-    export SHELL_PLATFORM
+if $BRCD_EXPORT_FUNCTIONS ; then
+    export BRCD_SHELL_PLATFORM
     export -f shell_is_linux
     export -f shell_is_osx
     export -f shell_is_login
@@ -62,29 +60,120 @@ if $EXPORT_FUNCTIONS ; then
 fi
 
 # Now dispatch special files
+BRCD_THIS_DIR=$(dirname "$(readlink -f ${BASH_SOURCE[0]})")
+BRCD_PREFIX="${BRCD_THIS_DIR}"
+[ -n "$BRCD_DEBUG" ] && echo BRCD_PREFIX = "$BRCD_PREFIX"
 
-PRF="${HOME}/tentacle/"
+# Define a "pre-hostname" : eg. "kraken" for "kraken.example.com"
+BRCD_PRE_HOSTNAME=$(hostname | cut -d "." -f 1)
+[ -n "$BRCD_DEBUG" ] && echo BRCD_PRE_HOSTNAME = "$BRCD_PRE_HOSTNAME"
 
 # bashrc_once needs guards to make sure it runs only once.
 # Set the guard BRCD_RANONCE before sourcing the bashrc_once file
 # so that any recursive invocations of bash_dispatch will not try
 # to run bashrc_once again
+# Allow for a system-specific .bashrc_interactive file specified locally
+#   eg. $HOME/.bashrc_interactive_local
+# Allow for a system-specific bashrc_interactive_${HOST} in tentacle/
+#   eg. if ~/tentacle/bashrc_interactive_kraken exists,
+#   source it on kraken.example.com
+# However, don't source it again if it was linked from *_local, above
+# Guard against sourcing the same file again by checking device and inode
+if [ -f "${BRCD_PREFIX}/bashrc_all" ]; then
+  [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_all"
+  . "${BRCD_PREFIX}/bashrc_all"
 
-if [ -f "${PRF}bashrc_once"  ] && [ -z "$BRCD_RANONCE" ]; then
-  export BRCD_RANONCE=true 
-  . "${PRF}bashrc_once"
-  #unset BRCD_RANONCE
+  if [ -f ${HOME}/.bashrc_all_local ]; then
+    [ -n "${BRCD_DEBUG}" ] && echo " --> source ${HOME}/bashrc_all_local"
+    . ${HOME}/.bashrc_all_local
+  fi
+
+  if [ -f "${BRCD_PREFIX}/bashrc_all_${BRCD_PRE_HOSTNAME}" ]; then
+    if [ ! "${HOME}/.bashrc_all_local" \
+	 -ef "${BRCD_PREFIX}/bashrc_all_${BRCD_PRE_HOSTNAME}" ]; then
+      . "${BRCD_PREFIX}/bashrc_all_${BRCD_PRE_HOSTNAME}"
+      [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_all_${BRCD_PRE_HOSTNAME}"
+    fi
+  fi
 fi
-[ -f "${PRF}bashrc_all" ]                                   && . "${PRF}bashrc_all"
-[ -f "${PRF}bashrc_script" ]      && shell_is_script        && . "${PRF}bashrc_script"
-[ -f "${PRF}bashrc_interactive" ] && shell_is_interactive   && . "${PRF}bashrc_interactive"
-[ -f "${PRF}bashrc_login" ]       && shell_is_login         && . "${PRF}bashrc_login"
 
+if [ -f "${BRCD_PREFIX}/bashrc_script" ] && shell_is_script ; then
+  [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_script"
+  . "${BRCD_PREFIX}/bashrc_script"
+
+  if [ -f ${HOME}/.bashrc_script_local ]; then
+    [ -n "${BRCD_DEBUG}" ] && echo " --> source ${HOME}/bashrc_script_local"
+    . ${HOME}/.bashrc_script_local
+  fi
+
+  if [ -f "${BRCD_PREFIX}/bashrc_script_${BRCD_PRE_HOSTNAME}" ]; then
+    if [ ! "${HOME}/.bashrc_script_local" \
+	 -ef "${BRCD_PREFIX}/bashrc_script_${BRCD_PRE_HOSTNAME}" ]; then
+      [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_script_${BRCD_PRE_HOSTNAME}"
+      . "${BRCD_PREFIX}/bashrc_script_${BRCD_PRE_HOSTNAME}"
+    fi
+  fi
+fi
+
+if [ -f "${BRCD_PREFIX}/bashrc_interactive" ] && shell_is_interactive ; then
+  [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_interactive"
+  . "${BRCD_PREFIX}/bashrc_interactive"
+
+  if [ -f ${HOME}/.bashrc_interactive_local ]; then
+    [ -n "${BRCD_DEBUG}" ] && echo " --> source ${HOME}/bashrc_interactive_local"
+    . ${HOME}/.bashrc_interactive_local
+  fi
+
+  if [ -f "${BRCD_PREFIX}/bashrc_interactive_${BRCD_PRE_HOSTNAME}" ]; then
+    if [ ! "${HOME}/.bashrc_interactive_local" \
+	 -ef "${BRCD_PREFIX}/bashrc_interactive_${BRCD_PRE_HOSTNAME}" ]; then
+      . "${BRCD_PREFIX}/bashrc_interactive_${BRCD_PRE_HOSTNAME}"
+      [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_interactive_${BRCD_PRE_HOSTNAME}"
+    fi
+  fi
+fi
+
+if [ -f "${BRCD_PREFIX}/bashrc_login" ] && shell_is_login ; then
+  [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_login"
+  . "${BRCD_PREFIX}/bashrc_login"
+
+  if [ -f ${HOME}/.bashrc_login_local ]; then
+    [ -n "${BRCD_DEBUG}" ] && echo " --> source ${HOME}/bashrc_login_local"
+    . ${HOME}/.bashrc_login_local
+  fi
+
+  if [ -f "${BRCD_PREFIX}/bashrc_login_${BRCD_PRE_HOSTNAME}" ]; then
+    if [ ! "${HOME}/.bashrc_login_local" \
+	 -ef "${BRCD_PREFIX}/bashrc_login_${BRCD_PRE_HOSTNAME}" ]; then
+      [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_login_${BRCD_PRE_HOSTNAME}"
+      . "${BRCD_PREFIX}/bashrc_login_${BRCD_PRE_HOSTNAME}"
+    fi
+  fi
+fi
+
+# This needs an additional guard to avoid recursive or repeated sourcing
+if [ -f "${BRCD_PREFIX}/bashrc_once"  ] && [ -z "$BRCD_RANONCE" ]; then
+  [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_once"
+  export BRCD_RANONCE=true 
+  . "${BRCD_PREFIX}/bashrc_once"
+
+  if [ -f ${HOME}/.bashrc_once_local ]; then
+    [ -n "${BRCD_DEBUG}" ] && echo " --> source ${HOME}/bashrc_once_local"
+    . ${HOME}/.bashrc_once_local
+  fi
+
+  if [ -f "${BRCD_PREFIX}/bashrc_once_${BRCD_PRE_HOSTNAME}" ]; then
+    if [ ! "${HOME}/.bashrc_once_local" \
+	 -ef "${BRCD_PREFIX}/bashrc_once_${BRCD_PRE_HOSTNAME}" ]; then
+      [ -n "${BRCD_DEBUG}" ] && echo " --> source ${BRCD_PREFIX}/bashrc_once_${BRCD_PRE_HOSTNAME}"
+      . "${BRCD_PREFIX}/bashrc_once_${BRCD_PRE_HOSTNAME}"
+    fi
+  fi
+fi
 
 # Unset variables if necessary to avoid env polution
-
-if ! $EXPORT_FUNCTIONS ; then
-    unset SHELL_PLATFORM
+if ! $BRCD_EXPORT_FUNCTIONS ; then
+    unset BRCD_SHELL_PLATFORM
     unset -f shell_is_linux
     unset -f shell_is_osx
     unset -f shell_is_login
@@ -94,8 +183,10 @@ fi
 
 
 # Unset local variables
-
 unset fn_cmd
-unset EXPORT_FUNCTIONS
-unset BASHRC_DISPATCH_PID
-unset PRF
+unset BRCD_EXPORT_FUNCTIONS
+unset BRCD_BASHRC_DISPATCH_PID
+unset BRCD_PREFIX
+unset BRCD_THIS_DIR
+unset BRCD_PRE_HOSTNAME
+unset BRCD_DEBUG
