@@ -63,7 +63,7 @@ fi
 
 # Now dispatch special files
 
-PRF="${HOME}/tentacle/."
+PRF="${HOME}/tentacle/"
 
 # bashrc_once needs guards to make sure it runs only once.
 # Set the guard BRCD_RANONCE before sourcing the bashrc_once file
