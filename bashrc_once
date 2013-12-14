@@ -1,0 +1,19 @@
+# This only runs once, so should set environment variables
+# and such here. They will be exported to child processes.
+
+# Locale settings
+export LANGUAGE="en_US:en"
+export LC_MESSAGES="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export LC_COLLATE="en_US.UTF-8"
+
+# My scripts
+export PATH=$HOME/bin:${PATH}
+
+# Python startup file
+export PYTHONSTARTUP=~/.pystartup
+
+# CVS
+export CVS_RSH=ssh
+export CVSEDITOR=vim
+

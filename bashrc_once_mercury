@@ -1,0 +1,29 @@
+# These are specific to a single musun installation.
+# You will have to modify this file on a host-by-host basis.
+# To maintain version control, the set of .bashrc_*_hostname
+# files will exist in the git repo.
+
+# CVS
+export CVSROOT="mhmurray@muon.npl.washington.edu:/home/cvs/musun/cvsroot"
+
+# ROOT
+source /opt/root/bin/thisroot.sh
+
+# MIDAS
+#source $HOME/alcap/thisalcap.sh
+source $HOME/musun/daq/midas/thismidas.sh
+
+# ROOTANA
+#source $HOME/musun/rootana/thisrootana.sh
+
+# LtFit blinding offset
+export LTFITINSTITUTION=UW
+
+# MU and MTA
+source $HOME/musun/mu/thismu.sh
+
+# PyROOT
+export LD_LIBRARY_PATH=/usr/lib/python2.7:$LD_LIBRARY_PATH
+
+# Where mail is delivered
+export MAIL=/var/spool/mail/michael
