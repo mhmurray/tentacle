@@ -1,2 +1,2 @@
-alias cds='cd /SCRATCH/mhmurray' 
+alias cds='cd /nfs/SCRATCH/mhmurray/'
 alias ls='ls --color=tty --time-style=long-iso'

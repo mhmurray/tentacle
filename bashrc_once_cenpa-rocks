@@ -27,4 +27,4 @@ export PYTHONDIR=/share/apps/python27
 export LD_LIBRARY_PATH=$PYTHONDIR/lib:$LD_LIBRARY_PATH
 
 # Rocks SCRATCH drive
-export SCRATCH=/SCRATCH/mhmurray
+export SCRATCH=/nfs/SCRATCH/mhmurray
