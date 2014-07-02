@@ -7,11 +7,11 @@
 export CVSROOT="mhmurray@muon.npl.washington.edu:/home/cvs/musun/cvsroot"
 
 # ROOT
-#source /opt/root/bin/thisroot.sh
+source /opt/root_v5.34.18_debug/bin/thisroot.sh
 
 # MIDAS
 #source $HOME/alcap/thisalcap.sh
-#source $HOME/musun/daq/midas/thismidas.sh
+source $HOME/musun/daq/midas/thismidas.sh
 
 # ROOTANA
 #source $HOME/musun/rootana/thisrootana.sh
@@ -20,7 +20,8 @@ export CVSROOT="mhmurray@muon.npl.washington.edu:/home/cvs/musun/cvsroot"
 export LTFITINSTITUTION=UW
 
 # MU and MTA
-#source $HOME/musun/mu/thismu.sh
+source $HOME/musun/mu/thismu.sh
+export MUSUNDATA=$HOME/musun/data
 
 # PyROOT
 #export LD_LIBRARY_PATH=/usr/lib/python2.7:$LD_LIBRARY_PATH
