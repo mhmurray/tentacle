@@ -19,10 +19,18 @@ BRCD_DEBUG=
 
 # Code
 # ----
+if [ -n "$BRCD_DEBUG" ]; then
+  echo "BASH_DISPATCH invoked. pid = $$"
+fi
 
 # Avoid recursive invocation
-[ -n "$BRCD_BASHRC_DISPATCH_PID" ] && [ $$ -eq "$BRCD_BASHRC_DISPATCH_PID" ] && return
-BRCD_BASHRC_DISPATCH_PID=$$
+if [ -n "$BRCD_BASHRC_DISPATCH_PID" ] && [ $$ -eq "$BRCD_BASHRC_DISPATCH_PID" ]; then
+  if [ -n "$BRCD_DEBUG" ]; then
+    echo "Avoiding recursive invocation. BRCD_BASHRC_DISPATCH_PID = $BRCD_BASHRC_DISPATCH_PID"
+  fi
+  return
+fi
+export BRCD_BASHRC_DISPATCH_PID=$$
 
 
 # Setup the main shell variables and functions
@@ -135,7 +143,6 @@ unset -f check_and_source_scripts
 # Unset local variables
 unset fn_cmd
 unset BRCD_EXPORT_FUNCTIONS
-unset BRCD_BASHRC_DISPATCH_PID
 unset BRCD_PREFIX
 unset BRCD_THIS_DIR
 unset BRCD_PRE_HOSTNAME

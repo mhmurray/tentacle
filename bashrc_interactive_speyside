@@ -1,0 +1,5 @@
+# Keychain for passwordless ssh. This is installed as binary by hand.
+keychain --nogui --quiet ~/.ssh/id_dsa
+. ~/.keychain/$HOSTNAME-sh
+
+alias l.='ls -d .*'
