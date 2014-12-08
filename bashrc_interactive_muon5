@@ -6,5 +6,12 @@ if [ $HOSTNAME == "muon5.npl.washington.edu" ]; then
 fi
 
 # Keychain for passwordless ssh. This is installed as binary by hand.
-keychain --nogui --quiet ~/.ssh/id_rsa
+keychain --timeout 480 --nogui --quiet ~/.ssh/id_rsa
 . ~/.keychain/$HOSTNAME-sh
+
+# aliases
+alias root='root -l'
+alias cds='cd $SCRATCH'
+
+# checkwinsize lets the terminal discover that the window is resized
+shopt -s checkwinsize

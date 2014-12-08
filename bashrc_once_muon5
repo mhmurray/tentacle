@@ -7,8 +7,10 @@ export CVSROOT="mhmurray@muon.npl.washington.edu:/home/cvs/musun/cvsroot"
 
 # ROOT
 #source /opt/root-5.34.11/bin/thisroot.sh
-source /opt/root-5.30.04-debug/bin/thisroot.sh
+source /opt/root-5.34.23-debug/bin/thisroot.sh
+#source /opt/root-5.30.04-debug/bin/thisroot.sh
 #source /opt/root-5.26.00/bin/thisroot.sh  # for testing old versions of ROOT
+#source /opt/root-5.34.11-in-place/bin/thisroot.sh
 
 # MIDAS
 source $HOME/musun/daq/midas/thismidas.sh
@@ -21,3 +23,6 @@ source $HOME/musun/mu/thismu.sh
 
 # PyROOT
 export LD_LIBRARY_PATH=/usr/lib/python2.6:$LD_LIBRARY_PATH
+
+# scratch dir
+export SCRATCH=/muonstorage/scratch/michael/
