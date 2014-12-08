@@ -1,6 +1,7 @@
 # Use keychain to manage ssh keys for passwordless login.
 # Note: --nogui option prompts on the command line, no pop-up, even with X.
-keychain --quiet --nogui ~/.ssh/id_dsa
+#       --timeout 480 (minutes) makes the authentication expire every 8 hours
+keychain --timeout 480 --quiet --nogui ~/.ssh/id_rsa
 . ~/.keychain/$HOSTNAME-sh
 
 # Set ls colors to something less awful

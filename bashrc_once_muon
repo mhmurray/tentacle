@@ -15,3 +15,6 @@ source $HOME/musun/mu/thismu.sh
 
 # PyROOT
 export LD_LIBRARY_PATH=/usr/lib/python2.6:$LD_LIBRARY_PATH
+
+# /usr/local/sbin and /sbin not in PATH by default
+export PATH=$PATH:/usr/sbin:/sbin
